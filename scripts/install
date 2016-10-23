@@ -40,10 +40,11 @@ sudo chown -R gogs:gogs $src_path
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
 nginx_conf=../conf/nginx.conf
-sed -i "s@YNH_WWW_PATH@$path@g" $nginx_conf
+sed -i "s@YNH_WWW_PATH@${path%/}@g" $nginx_conf
 sed -i "s@YNH_WWW_ALIAS@$src_path/@g" $nginx_conf
 sudo cp $nginx_conf /etc/nginx/conf.d/$domain.d/$app.conf
 
+# TODO find a way to let user edit the hook and not overwrite it
 # Add post receive hook to the gogs repo
 sed -i "s@YNH_WWW_ALIAS@$src_path/@g" "../conf/post-receive"
 sed -i "s@YNH_REPO_PATH@$repo_path/@g" "../conf/post-receive"

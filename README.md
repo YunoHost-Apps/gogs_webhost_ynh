@@ -1,4 +1,9 @@
 # Work In Progress : do not install in production
+## TODO
+- find a way to let user edit the hook and not overwrite it
+- better check if gogs is installed and on the repo format
+- backup/restore
+
 
 # Gogs web hosting for YunoHost
 
