@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Exit on command errors and treat unset variables as an error
+set -eu
+
+# See comments in install script
+app=$YNH_APP_INSTANCE_NAME
+
+# Source YunoHost helpers
+source /usr/share/yunohost/helpers
+
+# Retrieve app settings
+domain=$(ynh_app_setting_get "$app" domain)
+path=$(ynh_app_setting_get "$app" path)
+gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
+is_public=$(ynh_app_setting_get "$app" is_public)
+
+# Modify Nginx configuration file and copy it to Nginx conf directory
+nginx_conf=../conf/nginx.conf
+sed -i "s@YNH_WWW_PATH@$path@g" $nginx_conf
+sed -i "s@YNH_WWW_ALIAS@$src_path/@g" $nginx_conf
+sudo cp $nginx_conf /etc/nginx/conf.d/$domain.d/$app.conf
+
+# If app is public, add url to SSOWat conf as skipped_uris
+if [[ $is_public -eq 1 ]]; then
+  # See install script
+  ynh_app_setting_set "$app" unprotected_uris "/"
+fi
+
+# Update the repo
+src_path="/var/www/"${app}
+cd $src_path
+sudo git pull
+sudo chown -R gogs:gogs $src_path
+
+# Reload nginx service
+sudo systemctl reload nginx.service
