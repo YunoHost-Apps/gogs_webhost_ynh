@@ -46,7 +46,7 @@
                 "ask": {
                     "en": "Choose the gogs repository to host. Must be an existing repo.",
                     "fr": "Choisissez le dépôt Gogs à héberger. Doit être un dépôt existant."
-                }
+                },
                 "default": "user/repo"
             },
             {
