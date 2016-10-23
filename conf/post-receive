@@ -1,0 +1,4 @@
+#!/bin/bash
+cd YNH_WWW_ALIAS
+git pull origin master
+exit 0
