@@ -19,7 +19,7 @@ ynh_app_setting_set "$app" gogsrepo "$gogsrepo"
 ynh_app_setting_set "$app" is_public "$is_public"
 
 # TODO better check that gogs is installed
-sudo [ ! -d "/opt/gogs" ] \
+sudo [ -d "/opt/gogs" ] \
     || ynh_die "Gogs is not installed"
 
 # Check domain/path availability
@@ -30,12 +30,12 @@ repo_path="/home/gogs/repositories/"$gogsrepo".git"
 
 # TODO check format user/repo
 # Check that the gogs repository exist
-sudo [ ! -d "$repo_path" ] \
+sudo [ -d "$repo_path" ] \
     || ynh_die "The gogs repository "${gogsrepo}" does not exist"
 
 # Clone the repo
 src_path="/var/www/"${app}
-sudo git clone $gogsrepo $src_path
+sudo git clone $repo_path $src_path
 sudo chown -R gogs:gogs $src_path
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
