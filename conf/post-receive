@@ -1,4 +1,2 @@
 #!/bin/bash
-cd YNH_WWW_ALIAS
-git pull origin master
-exit 0
+git --work-tree=YNH_WWW_ALIAS --git-dir=YNH_REPO_PATH checkout -f

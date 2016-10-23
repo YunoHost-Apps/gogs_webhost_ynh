@@ -26,6 +26,7 @@ sudo cp $nginx_conf /etc/nginx/conf.d/$domain.d/$app.conf
 
 # Add post receive hook to the gogs repo
 sed -i "s@YNH_WWW_ALIAS@$src_path/@g" "../conf/post-receive"
+sed -i "s@YNH_REPO_PATH@$repo_path/@g" "../conf/post-receive"
 sudo cp "../conf/post-receive" $repo_path"/hooks/post-receive"
 sudo chmod +x $repo_path"/hooks/post-receive"
 sudo chown -R gogs:gogs $repo_path
@@ -37,8 +38,7 @@ if [[ $is_public -eq 1 ]]; then
 fi
 
 # Update the repo
-cd $src_path
-sudo git pull origin master
+sudo git --work-tree=$src_path --git-dir=$repo_path checkout -f
 sudo chown -R gogs:gogs $src_path
 
 # Reload nginx service

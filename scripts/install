@@ -46,6 +46,7 @@ sudo cp $nginx_conf /etc/nginx/conf.d/$domain.d/$app.conf
 
 # Add post receive hook to the gogs repo
 sed -i "s@YNH_WWW_ALIAS@$src_path/@g" "../conf/post-receive"
+sed -i "s@YNH_REPO_PATH@$repo_path/@g" "../conf/post-receive"
 sudo cp "../conf/post-receive" $repo_path"/hooks/post-receive"
 sudo chmod +x $repo_path"/hooks/post-receive"
 sudo chown -R gogs:gogs $repo_path
