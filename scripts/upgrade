@@ -16,6 +16,7 @@ gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
 is_public=$(ynh_app_setting_get "$app" is_public)
 
 src_path="/var/www/"${app}
+repo_path="/home/gogs/repositories/"$gogsrepo".git"
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
 nginx_conf=../conf/nginx.conf
