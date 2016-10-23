@@ -8,9 +8,14 @@ source /usr/share/yunohost/helpers
 
 # Retrieve app settings
 domain=$(ynh_app_setting_get "$app" domain)
+gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
 
 # Remove sources
 sudo rm -rf "/var/www/"${app}
+
+# Remove post-receive hook
+repo_path="/home/gogs/repositories/"$gogsrepo".git"
+sudo rm -f $repo_path"/hooks/post-receive"
 
 # Remove nginx configuration file
 sudo rm -f /etc/nginx/conf.d/$domain.d/$app.conf
