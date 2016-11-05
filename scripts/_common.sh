@@ -45,18 +45,21 @@ install_site() {
   local DOMAIN=$1
   local YNH_PATH=$2
   local REPO_PATH=$3
-  local IS_PUBLIC=$4
+  local REPO_BRANCH=$4
+  local REPO_DIR=$5
+  local IS_PUBLIC=$6
 
   # Modify Nginx configuration file and copy it to Nginx conf directory
   nginx_conf=../conf/nginx.conf
   sed -i "s@YNH_WWW_PATH@${YNH_PATH%/}@g" $nginx_conf
-  sed -i "s@YNH_WWW_ALIAS@$DESTDIR/@g" $nginx_conf
+  sed -i "s@YNH_WWW_ALIAS@$DESTDIR$REPO_DIR@g" $nginx_conf
   sudo cp $nginx_conf /etc/nginx/conf.d/$DOMAIN.d/$app.conf
 
   # TODO find a way to let user edit the hook and not overwrite it
   # Add post receive hook to the gogs repo
   sed -i "s@YNH_WWW_ALIAS@$DESTDIR/@g" "../conf/post-receive"
   sed -i "s@YNH_REPO_PATH@$REPO_PATH/@g" "../conf/post-receive"
+  sed -i "s@YNH_GIT_BRANCH@$REPO_BRANCH@g" "../conf/post-receive"
   sudo cp "../conf/post-receive" $REPO_PATH"/hooks/post-receive"
   sudo chmod +x $REPO_PATH"/hooks/post-receive"
   sudo chown -R gogs:gogs $REPO_PATH

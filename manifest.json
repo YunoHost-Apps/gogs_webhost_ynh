@@ -47,7 +47,26 @@
                     "en": "Choose the gogs repository to host. Must be an existing repo.",
                     "fr": "Choisissez le dépôt Gogs à héberger. Doit être un dépôt existant."
                 },
+                "example": "user/repo",
                 "default": "user/repo"
+            },
+            {
+                "name": "repo_branch",
+                "ask": {
+                    "en": "Choose the branch of the repository to host. Must be an existing branch.",
+                    "fr": "Choisissez la branche du dépôt Gogs à héberger. Doit être une branche existante."
+                },
+                "example": "master",
+                "default": "master"
+            },
+            {
+                "name": "repo_dir",
+                "ask": {
+                    "en": "Choose the directory of the gogs repository to host.",
+                    "fr": "Choisissez le répertoire du dépôt Gogs à héberger."
+                },
+                "example": "/",
+                "default": "/"
             },
             {
                 "name": "is_public",

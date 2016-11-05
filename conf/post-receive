@@ -1,2 +1,2 @@
 #!/bin/bash
-git --work-tree=YNH_WWW_ALIAS --git-dir=YNH_REPO_PATH checkout -f
+git --work-tree=YNH_WWW_ALIAS --git-dir=YNH_REPO_PATH checkout YNH_GIT_BRANCH -f

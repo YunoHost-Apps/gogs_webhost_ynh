@@ -10,17 +10,21 @@ source ./_common.sh
 domain=$YNH_APP_ARG_DOMAIN
 path=$YNH_APP_ARG_PATH
 gogsrepo=$YNH_APP_ARG_GOGSREPO
+repo_branch=$YNH_APP_ARG_REPO_BRANCH
+repo_dir=$YNH_APP_ARG_REPO_DIR
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
 # Save app settings
 ynh_app_setting_set "$app" gogsrepo "$gogsrepo"
+ynh_app_setting_set "$app" repo_branch "$repo_branch"
+ynh_app_setting_set "$app" repo_dir "$repo_dir"
 ynh_app_setting_set "$app" is_public "$is_public"
 
 pre_install $gogsrepo
 
 # Clone the repo
-sudo git clone --depth 1 --branch master $repo_path $DESTDIR
+sudo git clone --depth 1 --branch $repo_branch $repo_path $DESTDIR
 sudo chown -R gogs:gogs $DESTDIR
 
 # Install the app
-install_site $domain $path $gogsrepo $is_public
+install_site $domain $path $gogsrepo $repo_branch $repo_dir $is_public

@@ -10,13 +10,15 @@ source ./_common.sh
 domain=$(ynh_app_setting_get "$app" domain)
 path=$(ynh_app_setting_get "$app" path)
 gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
+repo_branch=$(ynh_app_setting_get "$app" repo_branch)
+repo_dir=$(ynh_app_setting_get "$app" repo_dir)
 is_public=$(ynh_app_setting_get "$app" is_public)
 
 repo_path="/home/gogs/repositories/"$gogsrepo".git"
 
 # Install the app
-install_site $domain $path $gogsrepo $is_public
+install_site $domain $path $gogsrepo $repo_branch $repo_dir $is_public
 
 # Update the repo
-sudo git --work-tree=$DESTDIR --git-dir=$repo_path checkout -f
+sudo git --work-tree=$DESTDIR --git-dir=$repo_path checkout $repo_branch -f
 sudo chown -R gogs:gogs $DESTDIR
