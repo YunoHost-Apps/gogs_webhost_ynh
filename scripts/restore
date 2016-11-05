@@ -3,19 +3,15 @@
 # Exit on command errors and treat unset variables as an error
 set -eu
 
-# See comments in install script
-app=$YNH_APP_INSTANCE_NAME
-
-# Source YunoHost helpers
-source /usr/share/yunohost/helpers
+# Load common variables and functions
+source ./_common.sh
 
 # Retrieve old app settings
 domain=$(ynh_app_setting_get "$app" domain)
 path=$(ynh_app_setting_get "$app" path)
+gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
 
-# Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app" \
-    || ynh_die "Path not available: ${domain}${path}"
+pre_install $gogsrepo --restore
 
 # Restore NGINX configuration
 sudo cp -a ./nginx.conf "/etc/nginx/conf.d/${domain}.d/${app}.conf"

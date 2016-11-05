@@ -3,7 +3,8 @@
 # Exit on command errors and treat unset variables as an error
 set -eu
 
-app=$YNH_APP_INSTANCE_NAME
+# Load common variables and functions
+source ./_common.sh
 
 # Retrieve arguments
 domain=$YNH_APP_ARG_DOMAIN
@@ -11,52 +12,15 @@ path=$YNH_APP_ARG_PATH
 gogsrepo=$YNH_APP_ARG_GOGSREPO
 is_public=$YNH_APP_ARG_IS_PUBLIC
 
-# Source YunoHost helpers
-source /usr/share/yunohost/helpers
-
 # Save app settings
 ynh_app_setting_set "$app" gogsrepo "$gogsrepo"
 ynh_app_setting_set "$app" is_public "$is_public"
 
-# TODO better check that gogs is installed
-sudo [ -d "/opt/gogs" ] \
-    || ynh_die "Gogs is not installed"
-
-# Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app" \
-    || ynh_die "Path not available: ${domain}${path}"
-
-repo_path="/home/gogs/repositories/"$gogsrepo".git"
-
-# TODO check format user/repo
-# Check that the gogs repository exist
-sudo [ -d "$repo_path" ] \
-    || ynh_die "The gogs repository "${gogsrepo}" does not exist"
+pre_install $gogsrepo
 
 # Clone the repo
-src_path="/var/www/"${app}
-sudo git clone $repo_path $src_path
-sudo chown -R gogs:gogs $src_path
+sudo git clone $repo_path $DESTDIR
+sudo chown -R gogs:gogs $DESTDIR
 
-# Modify Nginx configuration file and copy it to Nginx conf directory
-nginx_conf=../conf/nginx.conf
-sed -i "s@YNH_WWW_PATH@${path%/}@g" $nginx_conf
-sed -i "s@YNH_WWW_ALIAS@$src_path/@g" $nginx_conf
-sudo cp $nginx_conf /etc/nginx/conf.d/$domain.d/$app.conf
-
-# TODO find a way to let user edit the hook and not overwrite it
-# Add post receive hook to the gogs repo
-sed -i "s@YNH_WWW_ALIAS@$src_path/@g" "../conf/post-receive"
-sed -i "s@YNH_REPO_PATH@$repo_path/@g" "../conf/post-receive"
-sudo cp "../conf/post-receive" $repo_path"/hooks/post-receive"
-sudo chmod +x $repo_path"/hooks/post-receive"
-sudo chown -R gogs:gogs $repo_path
-
-# If app is public, add url to SSOWat conf as skipped_uris
-if [[ $is_public -eq 1 ]]; then
-  # unprotected_uris allows SSO credentials to be passed anyway.
-  ynh_app_setting_set "$app" unprotected_uris "/"
-fi
-
-# Reload services
-sudo systemctl reload nginx.service
+# Install the app
+install_site $domain $path $gogsrepo $is_public
