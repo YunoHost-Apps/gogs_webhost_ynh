@@ -1,2 +1,8 @@
 #!/bin/bash
-git --work-tree=YNH_WWW_ALIAS --git-dir=YNH_REPO_PATH checkout YNH_GIT_BRANCH -f
+
+### BEGIN YUNOHOST GENERATED CONTENT
+read refname
+if  [ $refname == "YNH_GIT_BRANCH" ]; then
+  git --work-tree=YNH_WWW_ALIAS --git-dir=YNH_REPO_PATH checkout YNH_GIT_BRANCH -f
+fi
+### END YUNOHOST GENERATED CONTENT
