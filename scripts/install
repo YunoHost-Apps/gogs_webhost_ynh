@@ -20,7 +20,7 @@ ynh_app_setting_set "$app" repo_branch "$repo_branch"
 ynh_app_setting_set "$app" repo_dir "$repo_dir"
 ynh_app_setting_set "$app" is_public "$is_public"
 
-pre_install $gogsrepo
+pre_install
 
 # Clone the repo
 sudo git clone --depth 1 --branch $repo_branch $repo_path $DESTDIR

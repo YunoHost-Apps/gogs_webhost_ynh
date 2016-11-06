@@ -3,8 +3,11 @@
 # Exit on command errors and treat unset variables as an error
 set -eu
 
-# Load common variables and functions
-source ./_common.sh
+app=${YNH_APP_INSTANCE_NAME:-gogswebhost}
+DESTDIR="/var/www/"${app}
+
+# Source YunoHost helpers
+source /usr/share/yunohost/helpers
 
 # Copy site files
 ynh_backup "$DESTDIR" "www"

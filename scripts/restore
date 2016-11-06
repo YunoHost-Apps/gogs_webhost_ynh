@@ -3,14 +3,31 @@
 # Exit on command errors and treat unset variables as an error
 set -eu
 
-# Load common variables and functions
-source ./_common.sh
+app=${YNH_APP_INSTANCE_NAME:-gogswebhost}
+DESTDIR="/var/www/"${app}
+
+# Source YunoHost helpers
+source /usr/share/yunohost/helpers
 
 # Retrieve old app settings
 domain=$(ynh_app_setting_get "$app" domain)
+path=$(ynh_app_setting_get "$app" path)
 gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
 
-pre_install $gogsrepo
+repo_path="/home/gogs/repositories/"$gogsrepo".git"
+
+# TODO better check that gogs is installed
+sudo [ -d "/opt/gogs" ] \
+    || ynh_die "Gogs is not installed"
+
+# Check domain/path availability
+sudo yunohost app checkurl "${domain}${path}" -a "$app" \
+    || ynh_die "Path not available: ${domain}${path}"
+
+# TODO check format user/repo
+# Check that the gogs repository exist
+sudo [ -d "$repo_path" ] \
+    || ynh_die "The gogs repository "${gogsrepo}" does not exist"
 
 # Restore the app and data files
 sudo cp -a ./www "$DESTDIR"
@@ -18,7 +35,7 @@ sudo cp -a ./www "$DESTDIR"
 sudo chown -R "gogs:gogs" "$DESTDIR"
 
 # Restore git hook
-sudo cp a ./post-receive $repo_path"/hooks/post-receive"
+sudo cp -a ./post-receive $repo_path"/hooks/post-receive"
 sudo chmod +x $repo_path"/hooks/post-receive"
 sudo chown -R gogs:gogs $repo_path
 

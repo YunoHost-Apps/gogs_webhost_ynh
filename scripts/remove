@@ -8,7 +8,7 @@ domain=$(ynh_app_setting_get "$app" domain)
 gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
 
 # Remove sources
-sudo rm -rf "/var/www/"${app}
+sudo rm -rf "/var/www/"${app:-preventunsetvariable}
 
 # Remove post-receive hook
 repo_path="/home/gogs/repositories/"$gogsrepo".git"

@@ -14,9 +14,7 @@ source /usr/share/yunohost/helpers
 #
 
 pre_install() {
-  local GOGSREPO=$1
-
-  repo_path="/home/gogs/repositories/"$GOGSREPO".git"
+  repo_path="/home/gogs/repositories/"$gogsrepo".git"
 
   # TODO better check that gogs is installed
   sudo [ -d "/opt/gogs" ] \
