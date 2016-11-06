@@ -27,4 +27,4 @@ sudo git clone --depth 1 --branch $repo_branch $repo_path $DESTDIR
 sudo chown -R gogs:gogs $DESTDIR
 
 # Install the app
-install_site $domain $path $gogsrepo $repo_branch $repo_dir $is_public
+install_site $domain $path $repo_path $repo_branch $repo_dir $is_public

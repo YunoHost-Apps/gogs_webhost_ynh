@@ -17,7 +17,7 @@ is_public=$(ynh_app_setting_get "$app" is_public)
 repo_path="/home/gogs/repositories/"$gogsrepo".git"
 
 # Install the app
-install_site $domain $path $gogsrepo $repo_branch $repo_dir $is_public
+install_site $domain $path $repo_path $repo_branch $repo_dir $is_public
 
 # Update the repo
 sudo git --work-tree=$DESTDIR --git-dir=$repo_path checkout $repo_branch -f
