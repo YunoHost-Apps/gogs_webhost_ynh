@@ -15,7 +15,7 @@ source /usr/share/yunohost/helpers
 
 pre_install() {
   local GOGSREPO=$1
-  local RESTORE=$2
+  local RESTORE=${2:-none}
 
   repo_path="/home/gogs/repositories/"$GOGSREPO".git"
 
