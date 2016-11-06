@@ -8,10 +8,19 @@ source ./_common.sh
 
 # Retrieve old app settings
 domain=$(ynh_app_setting_get "$app" domain)
-path=$(ynh_app_setting_get "$app" path)
 gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
 
-pre_install $gogsrepo --restore
+pre_install $gogsrepo
+
+# Restore the app and data files
+sudo cp -a ./www "$DESTDIR"
+# Restore directories and permissions
+sudo chown -R "gogs:gogs" "$DESTDIR"
+
+# Restore git hook
+sudo cp a ./post-receive $repo_path"/hooks/post-receive"
+sudo chmod +x $repo_path"/hooks/post-receive"
+sudo chown -R gogs:gogs $repo_path
 
 # Restore NGINX configuration
 sudo cp -a ./nginx.conf "/etc/nginx/conf.d/${domain}.d/${app}.conf"

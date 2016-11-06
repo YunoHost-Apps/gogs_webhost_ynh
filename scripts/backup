@@ -6,6 +6,14 @@ set -eu
 # Load common variables and functions
 source ./_common.sh
 
+# Copy site files
+ynh_backup "$DESTDIR" "www"
+
 # Copy NGINX configuration
 domain=$(ynh_app_setting_get "$app" domain)
 ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"
+
+# Copy post-receive hook
+gogsrepo=$(ynh_app_setting_get "$app" gogsrepo)
+repo_path="/home/gogs/repositories/"$gogsrepo".git"
+ynh_backup $repo_path"/hooks/post-receive" "post-receive"

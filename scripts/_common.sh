@@ -15,7 +15,6 @@ source /usr/share/yunohost/helpers
 
 pre_install() {
   local GOGSREPO=$1
-  local RESTORE=${2:-none}
 
   repo_path="/home/gogs/repositories/"$GOGSREPO".git"
 
@@ -27,18 +26,10 @@ pre_install() {
   sudo yunohost app checkurl "${domain}${path}" -a "$app" \
       || ynh_die "Path not available: ${domain}${path}"
 
-  if [ "$RESTORE" = "--restore" ]
-  then
-    # Restore the app and data files
-    sudo cp -a ./www "$DESTDIR"
-    # Restore directories and permissions
-    sudo chown -R "gogs:gogs" "$DESTDIR"
-  else
-    # TODO check format user/repo
-    # Check that the gogs repository exist
-    sudo [ -d "$repo_path" ] \
-        || ynh_die "The gogs repository "${gogsrepo}" does not exist"
-  fi
+  # TODO check format user/repo
+  # Check that the gogs repository exist
+  sudo [ -d "$repo_path" ] \
+      || ynh_die "The gogs repository "${gogsrepo}" does not exist"
   }
 
 install_site() {
