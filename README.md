@@ -24,7 +24,7 @@ From the command-line:
 
 ## Info
 
-- [YunoHost forum thread](https://forum.yunohost.org/)
+- [YunoHost forum thread](https://forum.yunohost.org/t/gogs-webhost-turn-a-gogs-repository-to-static-web-hosting/2098)
 - The post-receive hook of your Gogs repository will be overwritten at install and at each upgrade.
 - You can't use the app to host 2 time the same repository (because of the previous point).
 - There is no check that the branch and the directory you wish to serve exist in your repo, you must ensure that they exist before installing the app.
