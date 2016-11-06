@@ -52,7 +52,7 @@ install_site() {
   # Modify Nginx configuration file and copy it to Nginx conf directory
   nginx_conf=../conf/nginx.conf
   sed -i "s@YNH_WWW_PATH@${YNH_PATH%/}@g" $nginx_conf
-  sed -i "s@YNH_WWW_ALIAS@$DESTDIR$REPO_DIR@g" $nginx_conf
+  sed -i "s@YNH_WWW_ALIAS@$DESTDIR$REPO_DIR/@g" $nginx_conf
   sudo cp $nginx_conf /etc/nginx/conf.d/$DOMAIN.d/$app.conf
 
   # TODO find a way to let user edit the hook and not overwrite it
